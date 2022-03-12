@@ -1,0 +1,37 @@
+{%extends './base.html'%}
+{%block nav_items%}
+<ul class="navbar-nav">
+<li class="nav-item active">
+    <a class="nav-link" href="{%url 'bbe:index'%}">Accueil</a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="{%url 'bbe:logout'%}">Déconnecter</a>
+</li>
+
+</ul>
+{%endblock%}
+{%block profile_template%}
+<div class="profile m-auto">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Mon Compt</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Mon Huile</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Notfications</a>
+                </li>
+              </ul>
+        </div>
+        <div class="row">
+            {%block profile%}
+            {%endblock%}
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

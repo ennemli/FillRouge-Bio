@@ -1,0 +1,183 @@
+{%extends 'bases/base.html'%}
+{%load static%}
+
+{%load bbe_tags%}
+
+
+{%block search_model_shadow%}
+<div class="model-shadow"></div>
+{%endblock%}
+{%block nav_items%}
+<ul class="navbar-nav col-md-6">
+    <li class="nav-item active">
+        <a class="nav-link" href="{%url 'bbe:index'%}">Accueil</a>
+    </li>
+
+    {% is_user_authenticated as is_user_authenticated%}
+    {%if is_user_authenticated%}
+    <li class="nav-item">
+        <a class="nav-link" href="{%url 'bbe:profile'%}">Mon compte <i class="bi-person-fill"></i></a>
+    </li>
+
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="{%url 'bbe:register'%}">S'inscrire</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{%url 'bbe:login'%}">Connexion</a>
+    </li>
+    {%endif%}
+    <li class="nav-item">
+        <a class="btn btn-info fw-bolder" href="#">Réduction de 20%</a>
+
+    </li>
+</ul>
+<div class="col-md-6 mt-sm-2">
+<div class="position-relative">
+<form>
+    <input class="form-control me-2" id="product_search" type="search" placeholder="Rechercher" aria-label="Search">
+</form>
+<div class="list-group c-model" id="search_results">
+
+</div>
+</div>
+</div>
+
+{%endblock%}
+
+{%block index_template%}
+<div id="loading" class="d-flex loading justify-content-center">
+    <div class="product-not-found-message">
+        Produit non trouvé.
+    </div>
+</div>
+
+<div id="product" class="row">
+
+</div>
+{%endblock%}
+{%block scripts_template%}
+<script src="{%static 'js/search.js' %}"></script>
+
+<script>
+    async function getProductData(filters) {
+        const httpResponse = await fetch(`api/product/all/${filters}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        })
+        const products = await httpResponse.json()
+        return products
+    }
+
+    function getElementProductCard(product_data, img_src) {
+
+        const product = document.getElementById("product");
+        const col = document.createElement("div");
+        const card = document.createElement("div");
+        const card_body = document.createElement("div");
+        const card_title = document.createElement("h5");
+        const card_text = document.createElement("p");
+        const price_element = document.createElement("h6");
+        const input_quantity = document.createElement("input")
+        const order_btn = document.createElement("a")
+        const product_id = document.createElement("input")
+        const wrapped_price = document.createElement("div")
+        const inpts_wrapper = document.createElement("div")
+        const img = new Image()
+        const product_description = product_data.product_description
+        img.src = `${img_src}`;
+
+        wrapped_price.classList.add("d-flex", "justify-content-between", "align-items-baseline")
+        inpts_wrapper.classList.add("d-flex", "justify-content-between")
+        card_title.innerText = product_data.product_name;
+        card_text.innerHTML = product_description.length <= 200 ? product_description : `${product_description.slice(0, 200)} <a href="#">Suite...</a>`;
+
+        order_btn.innerText = "Commande";
+        product_id.type = "hidden"
+        price_element.innerText = `${product_data.price} MAD`
+        product_id.value = product_data.id;
+        order_btn.classList.add("btn", "btn-outline-danger")
+
+        input_quantity.type = "number";
+        input_quantity.min = 0;
+        input_quantity.max = product_data.max_quantity;
+        input_quantity.value = 0;
+        input_quantity.setAttribute("id", "order-inp");
+        order_btn.setAttribute("id", "order-btn");
+
+        input_quantity.classList.add("form-control", "w-50");
+        img.classList.add("card-img-top");
+        card.classList.add("card")
+        card_body.classList.add("card-body")
+        card_text.classList.add("card-text")
+        card_title.classList.add("card-title")
+        col.classList.add("col-md-12", "col-lg-4", "mb-4", "d-flex", "justify-content-center")
+
+        inpts_wrapper.append(input_quantity, order_btn)
+
+        wrapped_price.append(price_element, product_id, inpts_wrapper)
+        card_body.append(card_title, card_text, wrapped_price)
+
+        card.append(img, card_body)
+        col.append(card)
+        return col;
+
+    }
+    async function getImage(id) {
+        const httpResponse = await fetch(`api/product/image/${id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        })
+        const img = await httpResponse.json()
+        return img.image;
+    }
+    async function renderProducts(product_data, productElement) {
+        let row = document.createElement("div");
+        row.classList.add("row", "mt-4", "mb-4");
+
+        let i = 0;
+        let rows=[]
+        for (let product of product_data) {
+            let img_src = await getImage(product.image);
+
+            if (i == 3) {
+                rows.push(row)
+                row = document.createElement("div");
+                row.classList.add("row");
+                i = 0;
+
+            }
+
+            row.append(getElementProductCard(product, img_src));
+
+            i++;
+        }
+
+        if (row.hasChildNodes()) {
+            rows.push(row)
+
+        }
+        productElement.replaceChildren(...rows)
+    }
+    (async function () {
+        if(!is_loading){
+            makeLoading(product_element);
+            is_loading=true
+
+        }
+        const product_data = await getProductData("price");
+        is_loading=false
+        renderProducts(product_data, product_element);
+    }
+    )()
+
+</script>
+
+{%endblock%}
+{%block slideshow%}
+{%include 'components/slideshow.html'%}
+{%endblock%}

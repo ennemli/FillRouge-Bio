@@ -1,0 +1,27 @@
+{%extends 'bases/profile.html'%}
+
+{%block profile%}
+<div class="col-12">
+    <ul class="list-group">
+        {%for field in form%}
+        <li class="list-group-item">
+            <div class="row g-2">
+                <div class="col-12 fs-5">
+                    {{field.label}}:
+                </div>
+                <div class="row col-12">
+                    <div class="col-md-6 mb-3 mb-3">
+                        {{field}}
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" value="Changer" id="change" class="btn btn-outline-danger form-control">
+                    </div>
+                </div>
+
+            </div>
+
+        </li>
+{%endfor%}
+    </ul>
+</div>
+{%endblock%}

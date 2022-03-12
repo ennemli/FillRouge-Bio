@@ -1,0 +1,157 @@
+{%load static%}
+{%load django_bootstrap5 %}
+
+{%load bbe_tags%}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {%bootstrap_css%}
+  {%bootstrap_javascript%}
+  <script src="{%static 'js/components.js'%}"></script>
+
+  <link rel="stylesheet" href="{%static 'css/main.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css"
+    integrity="sha384-ejwKkLla8gPP8t2u0eQyL0Q/4ItcnyveF505U0NIobD/SMsNyXrLti6CWaD0L52l" crossorigin="anonymous">
+  <title>BioBE</title>
+  <style>
+    .carousel .carousel-item {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 450px;
+    }
+
+    .carousel .carousel-item:nth-child(1) {
+      background-image: url("{%static 'images/slideshow/bio_1.jpg'%}");
+    }
+
+    .carousel .carousel-item:nth-child(2) {
+      background-image: url("{%static 'images/slideshow/bio_2.jpg'%}");
+      background-position: bottom;
+    }
+
+    .carousel .carousel-item:nth-child(3) {
+      background-image: url("{%static 'images/slideshow/bio_3.jpg'%}");
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar fixed-sticky navbar-expand-md navbar-light bg-light" id="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{%url 'bbe:index'%}">BioBE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="row collapse navbar-collapse d-flex-md justify-content-between align-items-center"
+        id="navbarSupportedContent">
+        {%block nav_items%}{%endblock%}
+
+        
+      </div>
+    </div>
+  </nav>
+  {%block search_model_shadow%}{%endblock%}
+
+  {%block slideshow%}{%endblock%}
+  <div class="container-lg container-fluid mt-5 main">
+
+    {%block index_template%}{%endblock%}
+    {%block profile_template%}{%endblock%}
+    {%block register_template%}{%endblock%}
+    {%block login_template%}{%endblock%}
+
+  </div>
+  
+  <footer class="mt-5 p-5 bg-light">
+    <div class="row text-center">
+      <div class="col-md-4 col-sm-12 ">
+        <ul class="list-unstyled">
+          <h4>Guides</h4>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Nos Huiles</a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Nos Coffrets</a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Nos Fournisseurs</a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Qui Sommes Nous</a>
+
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <h4>Social Media</h4>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark fs-4">Facebook <i
+                class="bi-facebook text-primary"></i></a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark fs-4">Instagram <i
+                class="bi-instagram text-danger"></i></a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark fs-4">Youtube <i class="bi-youtube text-danger"></i></a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark fs-4">Tiktok <i class="bi-tiktok "></i></a>
+
+          </li>
+        </ul>
+
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <h4>Autres liens</h4>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Lien 1</i></a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Lien 2</i></a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Lien 3</i></a>
+
+          </li>
+          <li class="mb-2">
+            <a href="#" class="text-decoration-none text-dark">Lien 4</i></a>
+
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-12">
+        &copy; <a href="{%url 'bbe:index'%}" class="text-decoration-none text-dark text-center">
+          BioEtBienEtre.ma
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  {%block scripts_template%}{%endblock%}
+</body>
+
+</html>
